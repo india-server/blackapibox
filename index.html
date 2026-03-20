@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>BLACKBOXAPI | 闇の箱</title>
+    <title>BLACKBOXAPI </title>
     
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,100..900&family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
@@ -446,6 +446,55 @@
             </div>
         </div>
     </div>
+    <!-- Mobile Menu Toggle -->
+<button class="mobile-menu-toggle" id="mobileMenuToggle">
+    <i class="fas fa-bars"></i>
+</button>
+
+<!-- Mobile Overlay -->
+<div class="mobile-overlay" id="mobileOverlay"></div>
+
+<!-- Stats Toggle (Mobile) -->
+<button class="stats-toggle" id="statsToggle">
+    <i class="fas fa-chart-line"></i>
+</button>
+
+<!-- Bottom Navigation (Mobile) -->
+<div class="bottom-nav" id="bottomNav">
+    <div class="bottom-nav-items">
+        <a href="#" class="bottom-nav-item" data-page="dashboard">
+            <i class="fas fa-chart-line"></i>
+            <span>Home</span>
+        </a>
+        <a href="#" class="bottom-nav-item" data-page="analytics">
+            <i class="fas fa-chart-simple"></i>
+            <span>Stats</span>
+        </a>
+        <a href="#" class="bottom-nav-item" data-page="users">
+            <i class="fas fa-users"></i>
+            <span>Users</span>
+        </a>
+        <a href="#" class="bottom-nav-item" data-page="bots">
+            <i class="fas fa-robot"></i>
+            <span>Bots</span>
+        </a>
+        <a href="#" class="bottom-nav-item" data-page="settings">
+            <i class="fas fa-cog"></i>
+            <span>Settings</span>
+        </a>
+    </div>
+</div>
+
+<!-- Pull to Refresh -->
+<div class="pull-to-refresh" id="pullToRefresh">
+    <i class="fas fa-sync-alt"></i>
+    <span>Pull to refresh</span>
+</div>
+
+<!-- Swipe Hint -->
+<div class="swipe-hint" id="swipeHint">
+    <i class="fas fa-chevron-right"></i>
+</div>
     
     <!-- Scripts -->
     <script src="js/api.js"></script>
