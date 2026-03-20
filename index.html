@@ -2,8 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>BLACKBOXAPI </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <meta name="theme-color" content="#0a0a0f">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>BLACKBOXAPI | 闇の箱</title>
     
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,100..900&family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
@@ -15,10 +18,11 @@
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     
-    <!-- Custom CSS -->
+    <!-- CSS Files -->
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/anime.css">
     <link rel="stylesheet" href="css/glass.css">
+    <link rel="stylesheet" href="css/responsive.css">
 </head>
 <body>
     <!-- Particle Background -->
@@ -30,6 +34,19 @@
         <div class="float-circle"></div>
         <div class="float-circle"></div>
     </div>
+    
+    <!-- Mobile Menu Toggle -->
+    <button class="mobile-menu-toggle" id="mobileMenuToggle">
+        <i class="fas fa-bars"></i>
+    </button>
+    
+    <!-- Mobile Overlay -->
+    <div class="mobile-overlay" id="mobileOverlay"></div>
+    
+    <!-- Stats Toggle (Mobile) -->
+    <button class="stats-toggle" id="statsToggle">
+        <i class="fas fa-chart-line"></i>
+    </button>
     
     <!-- Main Container -->
     <div class="app-container">
@@ -189,7 +206,16 @@
                         </button>
                     </div>
                     <div class="activity-timeline" id="activity-timeline">
-                        <!-- Dynamic content -->
+                        <div class="timeline-item">
+                            <div class="timeline-icon">
+                                <i class="fas fa-spinner fa-pulse"></i>
+                            </div>
+                            <div class="timeline-content">
+                                <h4>Loading...</h4>
+                                <p>Fetching latest activity</p>
+                            </div>
+                            <div class="timeline-time">Just now</div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -211,27 +237,25 @@
                         <div class="metric-card glass">
                             <h4>Success Rate</h4>
                             <div class="metric-value" id="success-rate">98.7%</div>
-                            <div class="metric-trend">
-                                <canvas id="trend-spark" width="200" height="60"></canvas>
-                            </div>
+                            <div class="metric-trend positive">↑ 2.3%</div>
                         </div>
                         
                         <div class="metric-card glass">
                             <h4>Avg Response Time</h4>
                             <div class="metric-value" id="avg-response">124ms</div>
-                            <div class="metric-sub">-23ms from last week</div>
+                            <div class="metric-trend positive">↓ 23ms</div>
                         </div>
                         
                         <div class="metric-card glass">
                             <h4>Error Rate</h4>
                             <div class="metric-value" id="error-rate">1.3%</div>
-                            <div class="metric-trend negative">-0.2%</div>
+                            <div class="metric-trend negative">↓ 0.2%</div>
                         </div>
                         
                         <div class="metric-card glass">
                             <h4>Active Sessions</h4>
                             <div class="metric-value" id="active-sessions">1,247</div>
-                            <div class="metric-trend positive">+156</div>
+                            <div class="metric-trend positive">↑ 156</div>
                         </div>
                     </div>
                     
@@ -271,7 +295,9 @@
                                 </tr>
                             </thead>
                             <tbody id="logs-tbody">
-                                <!-- Dynamic logs -->
+                                <tr>
+                                    <td colspan="5" class="text-center">Loading logs...</td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -293,7 +319,7 @@
                         </button>
                     </div>
                     <div class="users-grid" id="users-grid">
-                        <!-- Dynamic user cards -->
+                        <div class="text-center">Loading users...</div>
                     </div>
                 </div>
             </div>
@@ -308,7 +334,7 @@
                         </button>
                     </div>
                     <div class="bots-grid" id="bots-grid">
-                        <!-- Dynamic bot cards -->
+                        <div class="text-center">Loading bots...</div>
                     </div>
                 </div>
             </div>
@@ -333,6 +359,7 @@
                                 <span class="slider"></span>
                             </label>
                         </div>
+                        <button id="save-settings" class="btn-primary" style="margin-top: 1rem;">Save Changes</button>
                     </div>
                     
                     <div class="settings-section glass">
@@ -340,7 +367,7 @@
                         <div class="setting-item">
                             <label>JWT Secret</label>
                             <input type="password" id="jwt-secret" value="••••••••••••••••">
-                            <button id="rotate-secret">Rotate</button>
+                            <button id="rotate-secret" class="btn-secondary">Rotate</button>
                         </div>
                         <div class="setting-item">
                             <label>API Key Rotation (days)</label>
@@ -363,7 +390,7 @@
             </div>
         </main>
         
-        <!-- Quick Stats Sidebar -->
+        <!-- Stats Sidebar -->
         <aside class="stats-sidebar glass">
             <div class="sidebar-header">
                 <h3>Live Stats</h3>
@@ -423,6 +450,43 @@
         </aside>
     </div>
     
+    <!-- Bottom Navigation (Mobile) -->
+    <div class="bottom-nav" id="bottomNav">
+        <div class="bottom-nav-items">
+            <a href="#" class="bottom-nav-item active" data-page="dashboard">
+                <i class="fas fa-chart-line"></i>
+                <span>Home</span>
+            </a>
+            <a href="#" class="bottom-nav-item" data-page="analytics">
+                <i class="fas fa-chart-simple"></i>
+                <span>Stats</span>
+            </a>
+            <a href="#" class="bottom-nav-item" data-page="users">
+                <i class="fas fa-users"></i>
+                <span>Users</span>
+            </a>
+            <a href="#" class="bottom-nav-item" data-page="bots">
+                <i class="fas fa-robot"></i>
+                <span>Bots</span>
+            </a>
+            <a href="#" class="bottom-nav-item" data-page="settings">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </a>
+        </div>
+    </div>
+    
+    <!-- Pull to Refresh -->
+    <div class="pull-to-refresh" id="pullToRefresh">
+        <i class="fas fa-sync-alt"></i>
+        <span>Pull to refresh</span>
+    </div>
+    
+    <!-- Swipe Hint -->
+    <div class="swipe-hint" id="swipeHint">
+        <i class="fas fa-chevron-right"></i>
+    </div>
+    
     <!-- Modals -->
     <div id="user-modal" class="modal">
         <div class="modal-content glass">
@@ -446,55 +510,6 @@
             </div>
         </div>
     </div>
-    <!-- Mobile Menu Toggle -->
-<button class="mobile-menu-toggle" id="mobileMenuToggle">
-    <i class="fas fa-bars"></i>
-</button>
-
-<!-- Mobile Overlay -->
-<div class="mobile-overlay" id="mobileOverlay"></div>
-
-<!-- Stats Toggle (Mobile) -->
-<button class="stats-toggle" id="statsToggle">
-    <i class="fas fa-chart-line"></i>
-</button>
-
-<!-- Bottom Navigation (Mobile) -->
-<div class="bottom-nav" id="bottomNav">
-    <div class="bottom-nav-items">
-        <a href="#" class="bottom-nav-item" data-page="dashboard">
-            <i class="fas fa-chart-line"></i>
-            <span>Home</span>
-        </a>
-        <a href="#" class="bottom-nav-item" data-page="analytics">
-            <i class="fas fa-chart-simple"></i>
-            <span>Stats</span>
-        </a>
-        <a href="#" class="bottom-nav-item" data-page="users">
-            <i class="fas fa-users"></i>
-            <span>Users</span>
-        </a>
-        <a href="#" class="bottom-nav-item" data-page="bots">
-            <i class="fas fa-robot"></i>
-            <span>Bots</span>
-        </a>
-        <a href="#" class="bottom-nav-item" data-page="settings">
-            <i class="fas fa-cog"></i>
-            <span>Settings</span>
-        </a>
-    </div>
-</div>
-
-<!-- Pull to Refresh -->
-<div class="pull-to-refresh" id="pullToRefresh">
-    <i class="fas fa-sync-alt"></i>
-    <span>Pull to refresh</span>
-</div>
-
-<!-- Swipe Hint -->
-<div class="swipe-hint" id="swipeHint">
-    <i class="fas fa-chevron-right"></i>
-</div>
     
     <!-- Scripts -->
     <script src="js/api.js"></script>
