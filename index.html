@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>BLACKBOXAPI | 闇の箱</title>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,100..900&family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Anime.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/anime.css">
+    <link rel="stylesheet" href="css/glass.css">
+</head>
+<body>
+    <!-- Particle Background -->
+    <canvas id="particle-canvas"></canvas>
+    
+    <!-- Floating Elements -->
+    <div class="floating-elements">
+        <div class="float-circle"></div>
+        <div class="float-circle"></div>
+        <div class="float-circle"></div>
+    </div>
+    
+    <!-- Main Container -->
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <nav class="glass-nav">
+            <div class="logo-section">
+                <div class="logo-icon">
+                    <i class="fas fa-cube"></i>
+                    <span class="glow"></span>
+                </div>
+                <div class="logo-text">
+                    <h1>BLACK<span>BOX</span></h1>
+                    <p>API v3.0</p>
+                </div>
+            </div>
+            
+            <div class="nav-links">
+                <a href="#" class="nav-link active" data-page="dashboard">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Dashboard</span>
+                    <div class="link-glow"></div>
+                </a>
+                <a href="#" class="nav-link" data-page="analytics">
+                    <i class="fas fa-chart-simple"></i>
+                    <span>Analytics</span>
+                </a>
+                <a href="#" class="nav-link" data-page="logs">
+                    <i class="fas fa-scroll"></i>
+                    <span>Logs</span>
+                </a>
+                <a href="#" class="nav-link" data-page="users">
+                    <i class="fas fa-users"></i>
+                    <span>Users</span>
+                </a>
+                <a href="#" class="nav-link" data-page="bots">
+                    <i class="fas fa-robot"></i>
+                    <span>Bots</span>
+                </a>
+                <a href="#" class="nav-link" data-page="settings">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+            </div>
+            
+            <div class="user-section">
+                <div class="user-avatar">
+                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Aerivue" alt="Aerivue">
+                    <div class="online-dot"></div>
+                </div>
+                <div class="user-info">
+                    <h4>Aerivue</h4>
+                    <p>Owner & Developer</p>
+                </div>
+                <div class="user-stats">
+                    <i class="fas fa-crown"></i>
+                    <span>∞</span>
+                </div>
+            </div>
+        </nav>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Dashboard Page -->
+            <div id="dashboard" class="page active">
+                <!-- Stats Cards -->
+                <div class="stats-grid">
+                    <div class="stat-card glass">
+                        <div class="stat-icon">
+                            <i class="fas fa-database"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Total Requests</h3>
+                            <div class="stat-value" id="total-requests">0</div>
+                            <div class="stat-trend positive">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>+12.5%</span>
+                            </div>
+                        </div>
+                        <canvas class="stat-spark" width="100" height="40"></canvas>
+                    </div>
+                    
+                    <div class="stat-card glass">
+                        <div class="stat-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Active Users</h3>
+                            <div class="stat-value" id="active-users">0</div>
+                            <div class="stat-trend positive">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>+8.2%</span>
+                            </div>
+                        </div>
+                        <canvas class="stat-spark" width="100" height="40"></canvas>
+                    </div>
+                    
+                    <div class="stat-card glass">
+                        <div class="stat-icon">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Active Bots</h3>
+                            <div class="stat-value" id="active-bots">0</div>
+                            <div class="stat-trend stable">
+                                <i class="fas fa-minus"></i>
+                                <span>0%</span>
+                            </div>
+                        </div>
+                        <canvas class="stat-spark" width="100" height="40"></canvas>
+                    </div>
+                    
+                    <div class="stat-card glass">
+                        <div class="stat-icon">
+                            <i class="fas fa-charging-station"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>API Health</h3>
+                            <div class="stat-value" id="api-health">99.9%</div>
+                            <div class="stat-trend positive">
+                                <i class="fas fa-heartbeat"></i>
+                                <span>Excellent</span>
+                            </div>
+                        </div>
+                        <canvas class="stat-spark" width="100" height="40"></canvas>
+                    </div>
+                </div>
+                
+                <!-- Charts Section -->
+                <div class="charts-grid">
+                    <div class="chart-card glass">
+                        <div class="chart-header">
+                            <h3>Request Volume</h3>
+                            <div class="chart-actions">
+                                <button class="chart-btn active" data-range="day">Day</button>
+                                <button class="chart-btn" data-range="week">Week</button>
+                                <button class="chart-btn" data-range="month">Month</button>
+                            </div>
+                        </div>
+                        <canvas id="requests-chart" height="300"></canvas>
+                    </div>
+                    
+                    <div class="chart-card glass">
+                        <div class="chart-header">
+                            <h3>Service Distribution</h3>
+                            <i class="fas fa-chart-pie"></i>
+                        </div>
+                        <canvas id="services-chart" height="300"></canvas>
+                    </div>
+                </div>
+                
+                <!-- Recent Activity -->
+                <div class="activity-card glass">
+                    <div class="activity-header">
+                        <h3>Recent Activity</h3>
+                        <button class="refresh-btn" id="refresh-activity">
+                            <i class="fas fa-sync-alt"></i>
+                        </button>
+                    </div>
+                    <div class="activity-timeline" id="activity-timeline">
+                        <!-- Dynamic content -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Analytics Page -->
+            <div id="analytics" class="page">
+                <div class="analytics-container">
+                    <div class="analytics-header">
+                        <h2>Advanced Analytics</h2>
+                        <div class="date-range">
+                            <input type="date" id="start-date">
+                            <span>→</span>
+                            <input type="date" id="end-date">
+                            <button id="apply-range">Apply</button>
+                        </div>
+                    </div>
+                    
+                    <div class="analytics-grid">
+                        <div class="metric-card glass">
+                            <h4>Success Rate</h4>
+                            <div class="metric-value" id="success-rate">98.7%</div>
+                            <div class="metric-trend">
+                                <canvas id="trend-spark" width="200" height="60"></canvas>
+                            </div>
+                        </div>
+                        
+                        <div class="metric-card glass">
+                            <h4>Avg Response Time</h4>
+                            <div class="metric-value" id="avg-response">124ms</div>
+                            <div class="metric-sub">-23ms from last week</div>
+                        </div>
+                        
+                        <div class="metric-card glass">
+                            <h4>Error Rate</h4>
+                            <div class="metric-value" id="error-rate">1.3%</div>
+                            <div class="metric-trend negative">-0.2%</div>
+                        </div>
+                        
+                        <div class="metric-card glass">
+                            <h4>Active Sessions</h4>
+                            <div class="metric-value" id="active-sessions">1,247</div>
+                            <div class="metric-trend positive">+156</div>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-container glass">
+                        <canvas id="detailed-chart" height="400"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Logs Page -->
+            <div id="logs" class="page">
+                <div class="logs-container">
+                    <div class="logs-header">
+                        <h2>System Logs</h2>
+                        <div class="log-filters">
+                            <select id="log-level">
+                                <option value="all">All Levels</option>
+                                <option value="info">Info</option>
+                                <option value="warning">Warning</option>
+                                <option value="error">Error</option>
+                            </select>
+                            <input type="text" id="log-search" placeholder="Search logs...">
+                            <button id="export-logs">
+                                <i class="fas fa-download"></i> Export
+                            </button>
+                        </div>
+                    </div>
+                    <div class="logs-table-wrapper">
+                        <table class="logs-table">
+                            <thead>
+                                <tr>
+                                    <th>Timestamp</th>
+                                    <th>Level</th>
+                                    <th>Service</th>
+                                    <th>Message</th>
+                                    <th>User ID</th>
+                                </tr>
+                            </thead>
+                            <tbody id="logs-tbody">
+                                <!-- Dynamic logs -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="logs-pagination">
+                        <button id="prev-page"><i class="fas fa-chevron-left"></i></button>
+                        <span id="page-info">Page 1 of 1</span>
+                        <button id="next-page"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Users Page -->
+            <div id="users" class="page">
+                <div class="users-container">
+                    <div class="users-header">
+                        <h2>User Management</h2>
+                        <button id="add-user" class="btn-primary">
+                            <i class="fas fa-plus"></i> Add User
+                        </button>
+                    </div>
+                    <div class="users-grid" id="users-grid">
+                        <!-- Dynamic user cards -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Bots Page -->
+            <div id="bots" class="page">
+                <div class="bots-container">
+                    <div class="bots-header">
+                        <h2>Bot Management</h2>
+                        <button id="add-bot" class="btn-primary">
+                            <i class="fas fa-plus"></i> Add Bot
+                        </button>
+                    </div>
+                    <div class="bots-grid" id="bots-grid">
+                        <!-- Dynamic bot cards -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Settings Page -->
+            <div id="settings" class="page">
+                <div class="settings-container">
+                    <div class="settings-section glass">
+                        <h3>API Configuration</h3>
+                        <div class="setting-item">
+                            <label>Rate Limit (per minute)</label>
+                            <input type="number" id="rate-limit" value="60">
+                        </div>
+                        <div class="setting-item">
+                            <label>Max Request Size (MB)</label>
+                            <input type="number" id="max-size" value="10">
+                        </div>
+                        <div class="setting-item">
+                            <label>Enable Caching</label>
+                            <label class="switch">
+                                <input type="checkbox" id="enable-cache" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-section glass">
+                        <h3>Security</h3>
+                        <div class="setting-item">
+                            <label>JWT Secret</label>
+                            <input type="password" id="jwt-secret" value="••••••••••••••••">
+                            <button id="rotate-secret">Rotate</button>
+                        </div>
+                        <div class="setting-item">
+                            <label>API Key Rotation (days)</label>
+                            <input type="number" id="key-rotation" value="30">
+                        </div>
+                    </div>
+                    
+                    <div class="settings-section glass">
+                        <h3>Notifications</h3>
+                        <div class="setting-item">
+                            <label>Telegram Alerts</label>
+                            <input type="text" id="alert-channel" placeholder="@yourchannel">
+                        </div>
+                        <div class="setting-item">
+                            <label>Email Reports</label>
+                            <input type="email" id="report-email" placeholder="admin@blackboxapi.com">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <!-- Quick Stats Sidebar -->
+        <aside class="stats-sidebar glass">
+            <div class="sidebar-header">
+                <h3>Live Stats</h3>
+                <div class="live-dot"></div>
+            </div>
+            <div class="live-stats">
+                <div class="live-stat">
+                    <span>Requests/sec</span>
+                    <strong id="live-rps">0</strong>
+                </div>
+                <div class="live-stat">
+                    <span>Active Users</span>
+                    <strong id="live-users">0</strong>
+                </div>
+                <div class="live-stat">
+                    <span>API Latency</span>
+                    <strong id="live-latency">0ms</strong>
+                </div>
+            </div>
+            <div class="system-info">
+                <div class="info-item">
+                    <i class="fas fa-microchip"></i>
+                    <span>CPU: <span id="cpu-usage">12%</span></span>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-memory"></i>
+                    <span>RAM: <span id="ram-usage">2.4GB</span></span>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-hdd"></i>
+                    <span>Storage: <span id="storage-usage">156GB</span></span>
+                </div>
+            </div>
+            <div class="api-key-status">
+                <h4>API Keys</h4>
+                <div class="key-status-item">
+                    <span>Number API</span>
+                    <div class="status-badge active">Active</div>
+                </div>
+                <div class="key-status-item">
+                    <span>Aadhar API</span>
+                    <div class="status-badge active">Active</div>
+                </div>
+                <div class="key-status-item">
+                    <span>IMEI API</span>
+                    <div class="status-badge warning">Limited</div>
+                </div>
+                <div class="key-status-item">
+                    <span>RTO API</span>
+                    <div class="status-badge active">Active</div>
+                </div>
+                <div class="key-status-item">
+                    <span>TG API</span>
+                    <div class="status-badge active">Active</div>
+                </div>
+            </div>
+        </aside>
+    </div>
+    
+    <!-- Modals -->
+    <div id="user-modal" class="modal">
+        <div class="modal-content glass">
+            <div class="modal-header">
+                <h3>Add New User</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <input type="text" id="user-telegram-id" placeholder="Telegram ID">
+                <input type="text" id="user-username" placeholder="Username">
+                <select id="user-role">
+                    <option value="user">User</option>
+                    <option value="admin">Admin</option>
+                    <option value="owner">Owner</option>
+                </select>
+                <input type="number" id="user-points" placeholder="Initial Points" value="100">
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary cancel">Cancel</button>
+                <button class="btn-primary save-user">Save</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Scripts -->
+    <script src="js/api.js"></script>
+    <script src="js/charts.js"></script>
+    <script src="js/effects.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
